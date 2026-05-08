@@ -1,56 +1,54 @@
-# React + TypeScript + Vite
+# solana-nft-anchor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Solana NFT marketplace built with **Anchor** and **Metaplex Token Metadata**. Mint NFTs, list them for sale, and buy them — all on Solana.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
 
-## Expanding the ESLint configuration
+- **Program** — Rust + [Anchor](https://www.anchor-lang.com/) (`programs/solana-nft-anchor/`)
+- **Metadata** — Metaplex Token Metadata
+- **Frontend** — React + Vite + TypeScript (`app/`)
+- **Wallet** — Solana wallet adapter (`@solana/wallet-adapter-react`)
+- **SDK** — `@metaplex-foundation/umi`, `@metaplex-foundation/mpl-token-metadata`, `@project-serum/anchor`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Layout
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+.
+├── Anchor.toml                       Anchor workspace config
+├── programs/
+│   └── solana-nft-anchor/            Rust program — mint / list / buy instructions
+├── tests/
+│   └── solana-nft-anchor.ts          Program test suite (Mocha + Anchor)
+├── migrations/
+│   └── deploy.ts
+└── app/                              React + Vite frontend
+    ├── src/                          Wallet connect, mint UI, marketplace UI
+    ├── public/
+    └── webpack.config.js
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Build & test
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+```bash
+# Build the program
+anchor build
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+# Run program tests against a local validator
+anchor test
+
+# Run the frontend
+cd app && npm install && npm run dev
 ```
-# NFT-Marketplace-Solana1
-# solana_nft_anchor
-# solana_nft_anchor
-# NFT-Marketplace-Solana1
-# solana_nft_anchor
-# solana_nft_anchor
+
+## Deploy to devnet
+
+```bash
+solana config set --url devnet
+anchor deploy
+```
+
+## License
+
+MIT
